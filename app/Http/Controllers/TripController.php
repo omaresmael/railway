@@ -22,8 +22,9 @@ class TripController extends Controller
     {
 
         $trips = Trip::with('stations','baseStation','destinationStation')->get();
+        $response['success'] = $trips;
+        return  $response;
 
-        return json_decode($trips);
     }
 
     /**
