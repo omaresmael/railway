@@ -14,7 +14,10 @@ class TrainController extends Controller
      */
     public function index()
     {
-        //
+        $trains = Train::all();
+        $response['success'] = $trains;
+        return  $response;
+
     }
 
     /**

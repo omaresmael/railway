@@ -28,3 +28,5 @@ Route::resource('trips',App\Http\Controllers\TripController::class);
 //stations
 Route::resource('stations',\App\Http\Controllers\StationController::class);
 
+//
+Route::resource('trains',\App\Http\Controllers\TrainController::class);
