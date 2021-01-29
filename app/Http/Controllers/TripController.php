@@ -20,6 +20,7 @@ class TripController extends Controller
      */
     public function index()
     {
+
         $trips = Trip::with('stations','baseStation','destinationStation')->get();
 
         return json_decode($trips);
@@ -43,6 +44,7 @@ class TripController extends Controller
      */
     public function store(TripRequest $request)
     {
+
         $user = \request()->user;
 
         if($user->isAdmin()) {
