@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Station;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class StationController extends Controller
 {
@@ -18,7 +19,9 @@ class StationController extends Controller
         if($user->isAdmin()){
             $stations = Station::query()
             ->select('id','name')->get();
-            return $stations;
+
+            $response['success'] = $stations;
+            return  $response;
         }
 
         else {
