@@ -18,7 +18,7 @@ class StationController extends Controller
         if($user->isAdmin()){
             $stations = Station::query()
             ->select('id','name')->get();
-            return response()->json($stations);
+            return $stations;
         }
 
         else {

@@ -21,6 +21,8 @@ class CreateStationTripTable extends Migration
                 ->references('id')
                 ->on('stations');
 
+
+
             $table->unsignedBigInteger('trip_id');
             $table->foreign('trip_id')
                 ->references('id')
