@@ -58,7 +58,7 @@ class MobileAuthController extends Controller
                     $token = $user->createToken($request->device_name);
                 }
 
-                return ['token'=>$token,'user'=>$user->name];
+                return ['token'=>$token,'user'=>$user];
             }
 
         return $this->validation($request);
@@ -79,6 +79,8 @@ class MobileAuthController extends Controller
     protected function validation($request)
 
     {
+
+
         $validator = Validator::make($request->all(),$request->rules());
 
         if ($validator->fails()) {
@@ -96,6 +98,7 @@ class MobileAuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'phone_number'=>$data['phone_number']
         ]);
     }
 
