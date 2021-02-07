@@ -22,7 +22,7 @@ class TripController extends Controller
     {
 
         $trips = Trip::with('stations','baseStation','destinationStation')->get();
-        $response['success'] = $trips;
+        $response = responseFormat($trips);
         return  $response;
 
     }

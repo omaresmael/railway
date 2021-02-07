@@ -9,6 +9,8 @@ class Seat extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['status'];
+
     public function car()
     {
         return $this->belongsTo(Car::class);

@@ -47,13 +47,19 @@ class User extends Authenticatable
         return $this->currentAccessToken()->abilities == '["admin"]';
     }
 
-    public function seats()
-    {
-        return $this->belongsToMany(User::class);
-    }
+//    public function seats()
+//    {
+//        return $this->belongsToMany(User::class);
+//    }
 
     public function favorites()
     {
         return $this->morphMany(Favorite::class, 'favoritable');
     }
+
+    public function seaats()
+    {
+        return $this->morphToMany(Seat::class, 'seatable');
+    }
+
 }

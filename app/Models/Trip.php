@@ -30,4 +30,8 @@ class Trip extends Model
     {
         return $this->morphMany(Favorite::class, 'favoritable');
     }
+    public function seats()
+    {
+        return $this->morphToMany(Seat::class, 'seatable');
+    }
 }
