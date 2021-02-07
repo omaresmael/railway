@@ -18,13 +18,10 @@ class SeatController extends Controller
     public function bookTicket($id){
         $user = User::first();
 
-        dd($user->seaats);
-
         $user->seaats()->create([
             'status' => 'current',
             'seat_id'=> $id,
-            'seatable_id' => $user->id,
-            'seatable_type' => get_class($user)
+
         ]);
         return 'done';
     }
