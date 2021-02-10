@@ -11,7 +11,9 @@ class TripController extends Controller
 
     public function __construct()
     {
+
         return $this->middleware('token');
+
     }
     /**
      * Display a listing of the resource.

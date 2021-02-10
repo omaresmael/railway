@@ -10,19 +10,15 @@ use Illuminate\Support\Facades\Auth;
 class SeatController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        return $this->middleware('token');
-//    }
+    public function __construct()
+    {
+        return $this->middleware('token');
+    }
 
     public function bookTicket($id){
         $user = User::first();
-
-        $user->seaats()->create([
-            'status' => 'current',
-            'seat_id'=> $id,
-
-        ]);
+        $seat = Seat::find($id);
+        $user->seats()->attach($seat->id);
         return 'done';
     }
 

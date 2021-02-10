@@ -35,3 +35,8 @@ Route::resource('trains',\App\Http\Controllers\TrainController::class);
 Route::get('/tickets/{seat}',[\App\Http\Controllers\SeatController::class,'getTicket']);
 Route::post('/tickets/{seat}',[\App\Http\Controllers\SeatController::class,'bookTicket']);
 
+
+//user Handler
+Route::get('/users',[\App\Http\Controllers\UserController::class,'index']);
+Route::delete('/users/{deletedUser}',[\App\Http\Controllers\UserController::class,'destroy']);
+

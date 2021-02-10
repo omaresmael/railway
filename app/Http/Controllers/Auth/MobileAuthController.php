@@ -32,14 +32,20 @@ class MobileAuthController extends Controller
                 ]);
             }
 
+
             if($request->has('admin')){
                 $token = $user->createToken($request->device_name,['admin']);
             }
             else {
                 $token = $user->createToken($request->device_name);
             }
+            $credentials = $request->except(['device_name','admin']);
+            if (auth()->attempt($credentials)) {
 
-            return ['token'=>$token,'$user'=>$user->name];
+                return ['token'=>$token,'user'=>$user];
+            }
+
+
         }
          return $this->validation($request);
     }

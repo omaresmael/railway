@@ -57,8 +57,9 @@ class User extends Authenticatable
         return $this->morphMany(Favorite::class, 'favoritable');
     }
 
-    public function seaats()
+    public function seats()
     {
+
         return $this->morphToMany(Seat::class, 'seatable');
     }
 

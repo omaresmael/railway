@@ -9,17 +9,29 @@ class Seat extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status'];
+    protected $fillable = ['status','car_id'];
 
     public function car()
     {
         return $this->belongsTo(Car::class);
     }
 
+//    public function users()
+//    {
+//        return $this->belongsToMany(User::class);
+//    }
+
     public function users()
     {
-        return $this->belongsToMany(User::class);
+    return $this->morphedByMany(User::class, 'seatable');
     }
+
+    public function trips()
+    {
+        return $this->morphedByMany(Trip::class, 'seatable');
+    }
+
+
 
 
 }
