@@ -29,6 +29,7 @@ class UserController extends Controller
 
         $user = \request()->user;
         if($user->isAdmin()){
+            $user->tokens()->delete();
             $deletedUser->delete();
             return response()->json(['success' => 'User Deleted Successfully'], 200);
         }

@@ -24,7 +24,7 @@ class CheckToken
         if(!$token){
             return response()->json(['error' => 'you\'re not authorized'], 401);
         }
-        $user = User::find($token->tokenable_id);
+        $user = User::findOrFail($token->tokenable_id);
         $user->withAccessToken($token);
         $request->merge(['user'=>$user]);
 
