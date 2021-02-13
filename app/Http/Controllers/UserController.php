@@ -28,8 +28,9 @@ class UserController extends Controller
     public function destroy(User $deletedUser){
 
         $user = \request()->user;
+
         if($user->isAdmin()){
-            $user->tokens()->delete();
+            $deletedUser->tokens()->delete();
             $deletedUser->delete();
             return response()->json(['success' => 'User Deleted Successfully'], 200);
         }
