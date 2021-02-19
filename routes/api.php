@@ -32,7 +32,7 @@ Route::resource('stations',\App\Http\Controllers\StationController::class);
 Route::resource('trains',\App\Http\Controllers\TrainController::class);
 
 //tickets
-Route::get('/tickets/{seat}',[\App\Http\Controllers\SeatController::class,'getTicket']);
+Route::get('/tickets/',[\App\Http\Controllers\SeatController::class,'getTicket']);
 Route::post('/tickets/{seat}',[\App\Http\Controllers\SeatController::class,'bookTicket']);
 
 

@@ -32,7 +32,7 @@ class SeatController extends Controller
         return 'success';
     }
 
-    public function getTicket($id)
+    public function getTicket()
     {
         $user = \request()->user;
 
