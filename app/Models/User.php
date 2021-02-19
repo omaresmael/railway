@@ -63,4 +63,19 @@ class User extends Authenticatable
         return $this->morphToMany(Seat::class, 'seatable');
     }
 
+    public function tickets() {
+       $tickets = [];
+        $userSeats = $this->seats()->where('seatables.status','valid')->get();
+        foreach ($userSeats as $i => $seat)
+        {
+            $tickets[$i] = [['trip_data'=>$seat->CurrentTrip()],['seat_id'=>$seat->pivot->seat_id]];
+
+
+        }
+
+
+
+        return $tickets;
+    }
+
 }

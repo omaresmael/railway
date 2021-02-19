@@ -10,6 +10,7 @@ class Seat extends Model
     use HasFactory;
 
     protected $fillable = ['status','car_id'];
+    //protected $with = ['car'];
 
     public function car()
     {
@@ -29,6 +30,20 @@ class Seat extends Model
     public function trips()
     {
         return $this->morphedByMany(Trip::class, 'seatable');
+    }
+
+    public function train()
+    {
+        return $this->car->train();
+    }
+
+    public function currentTrip()
+    {
+        $trip = $this->train->trips()->where('status','current')->first();
+
+        $price =$this->car->level->price;
+        return [$trip,['price'=>$price]];
+
     }
 
 

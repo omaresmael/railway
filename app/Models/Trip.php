@@ -10,6 +10,7 @@ class Trip extends Model
     use HasFactory;
 
     protected $fillable = ['depart_time','arrival_time','base_id','destination_id','train_id'];
+    protected $with = ['baseStation:id,name','destinationStation:id,name'];
 
     public function stations()
     {
@@ -34,4 +35,10 @@ class Trip extends Model
     {
         return $this->morphToMany(Seat::class, 'seatable');
     }
+
+    public function train()
+    {
+        return $this->belongsTo(Train::class);
+    }
+
 }

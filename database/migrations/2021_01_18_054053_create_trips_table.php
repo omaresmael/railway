@@ -18,6 +18,8 @@ class CreateTripsTable extends Migration
             $table->dateTime('depart_time');
             $table->dateTime('arrival_time');
 
+            $table->string('status')->default('current');
+
             $table->unsignedBigInteger('base_id');
             $table->foreign('base_id')
                 ->references('id')
