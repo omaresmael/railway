@@ -32,7 +32,11 @@ class SeatController extends Controller
         $seat->status = 'booked';
         $seat->update();
 
-        return 'success';
+        $userSeat = $user->seats()->where('seatables.status','valid')->orderBy('id', 'desc')->limit(1)->get();
+
+
+
+        return ['trip_data'=>$trip,'seat_id'=>$seat->id];
     }
 
     public function getTicket()
