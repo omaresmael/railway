@@ -22,10 +22,13 @@ class SeatController extends Controller
         $user = \request()->user;
         $seat = Seat::where('status','available')->findOrFail($id);
 
+        //dd($seat);
+
         $trip = $seat->CurrentTrip();
 
+
         $user->seats()->attach($seat->id,['status' => 'valid']);
-        $trip->seats()->attach($seat->id,['status' => 'valid']);
+        $trip['trip']->seats()->attach($seat->id,['status' => 'valid']);
         $seat->status = 'booked';
         $seat->update();
 

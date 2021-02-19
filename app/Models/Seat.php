@@ -42,7 +42,7 @@ class Seat extends Model
         $trip = $this->train->trips()->where('status','current')->first();
 
         $price =$this->car->level->price;
-        return [$trip,['price'=>$price]];
+        return ['trip'=>$trip,'price'=>$price];
 
     }
 
