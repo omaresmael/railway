@@ -64,7 +64,7 @@ class TripController extends Controller
             }
             $seats = array_merge(...$seats);
 
-            $trip->seats()->attach($seats);
+            $trip->seats()->attach($seats,['status'=>'valid']);
 
             return response()->json(['success'=>'Trip Added Successfully'],200);
         }

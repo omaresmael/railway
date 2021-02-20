@@ -15,7 +15,7 @@ class CreateSeatablesTable extends Migration
     {
         Schema::create('seatables', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default('valid');
+            $table->string('status');
 
             $table->unsignedBigInteger('seat_id');
             $table->unsignedBigInteger('seatable_id');
