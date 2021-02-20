@@ -15,7 +15,7 @@ class CreateSeatsTable extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->text('status');
+            $table->text('status')->default('available');
 
             $table->unsignedBigInteger('car_id');
             $table->foreign('car_id')

@@ -36,7 +36,7 @@ class SeatController extends Controller
                 return response()->json(['error'=>'the Seat '.$seat->id .' is already booked'],404);
             }
             $trips[$i] = $seat->CurrentTrip();
-            $user->seats()->attach($seat->id,['status' => 'valid']);
+            $user->seats()->attach($seat->id);
             $seat->status = 'booked';
             $seat->update();
         }
