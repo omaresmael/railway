@@ -13,4 +13,9 @@ class Level extends Model
     {
         return $this->hasMany(Car::class);
     }
+
+    public function trips()
+    {
+        return $this->belongsToMany(Trip::class)->withPivot('price');
+    }
 }

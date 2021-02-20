@@ -23,7 +23,7 @@ class TripController extends Controller
     public function index()
     {
 
-        $trips = Trip::with('stations','baseStation','destinationStation')->get();
+        $trips = Trip::with('stations','baseStation','destinationStation','seats')->get();
         $response = responseFormat($trips);
         return  $response;
 
@@ -53,8 +53,19 @@ class TripController extends Controller
         if($user->isAdmin()) {
             $trip = Trip::create($request->all());
             if ($request->has('stations')) {
-                $trip->stations()->attach($$request->has('stations'));
+                $trip->stations()->attach($request->has('stations'));
             }
+            $cars = $trip->train->cars;
+            $seats = [];
+            foreach ($cars as $car)
+            {
+                $id = $car->seats->pluck('id');
+                array_push($seats, $id->all());
+            }
+            $seats = array_merge(...$seats);
+
+            $trip->seats()->attach($seats,['status'=>'valid']);
+
             return response()->json(['success'=>'Trip Added Successfully'],200);
         }
         else {

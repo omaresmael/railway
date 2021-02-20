@@ -16,27 +16,32 @@ class SeatController extends Controller
         return $this->middleware('token');
     }
 
-    public function bookTicket($id)
+    public function bookTicket()
     {
+        /**
+         * TODO::Add the amount functionality
+         * TODO::Add Pricable table that links between price and level adn trips
+         */
 
         $user = \request()->user;
-        $seat = Seat::where('status','available')->findOrFail($id);
+        $ids = \request()->seats;
 
+        $seats = Seat::whereIn('id',$ids)->get();
+
+        $trips= [];
         //dd($seat);
+        foreach ($seats as $i => $seat)
+        {
+            if($seat->status == 'booked'){
+                return response()->json(['error'=>'the Seat '.$seat->id .' is already booked'],404);
+            }
+            $trips[$i] = $seat->CurrentTrip();
+            $user->seats()->attach($seat->id,['status' => 'valid']);
+            $seat->status = 'booked';
+            $seat->update();
+        }
 
-        $trip = $seat->CurrentTrip();
-
-
-        $user->seats()->attach($seat->id,['status' => 'valid']);
-        $trip['trip']->seats()->attach($seat->id,['status' => 'valid']);
-        $seat->status = 'booked';
-        $seat->update();
-
-        $userSeat = $user->seats()->where('seatables.status','valid')->orderBy('id', 'desc')->limit(1)->get();
-
-
-
-        return ['trip_data'=>$trip,'seat_id'=>$seat->id];
+        return ['trip_data'=>$trips,'seats'=>$seats];
     }
 
     public function getTicket()

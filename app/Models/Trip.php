@@ -40,5 +40,9 @@ class Trip extends Model
     {
         return $this->belongsTo(Train::class);
     }
+    public function levels()
+    {
+        return $this->belongsToMany(Level::class)->withPivot('price');
+    }
 
 }

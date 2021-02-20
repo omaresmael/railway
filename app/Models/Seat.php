@@ -39,7 +39,8 @@ class Seat extends Model
 
     public function currentTrip()
     {
-        $trip = $this->train->trips()->where('status','current')->first();
+        $trip = $this->trips()->where('seatables.status','valid')->get();
+
 
         $price =$this->car->level->price;
         return ['trip'=>$trip,'price'=>$price];
