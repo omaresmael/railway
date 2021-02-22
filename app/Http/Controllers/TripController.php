@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TripRequest;
+use App\Models\Train;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,8 @@ class TripController extends Controller
     public function index()
     {
 
-        $trips = Trip::with('stations','baseStation','destinationStation','seats')->get();
+
+        $trips = Trip::with('stations','baseStation','destinationStation','seats','levels')->get();
         $response = responseFormat($trips);
         return  $response;
 
@@ -49,7 +51,7 @@ class TripController extends Controller
     {
 
         $user = \request()->user;
-
+        $prices = $request->prices;
         if($user->isAdmin()) {
             $trip = Trip::create($request->all());
             if ($request->has('stations')) {
@@ -57,12 +59,18 @@ class TripController extends Controller
             }
             $cars = $trip->train->cars;
             $seats = [];
+            $levels = [];
             foreach ($cars as $car)
             {
+                $levelId = $car->level->id;
+
+                array_push($levels, $levelId);
                 $id = $car->seats->pluck('id');
                 array_push($seats, $id->all());
             }
             $seats = array_merge(...$seats);
+
+            $trip->levels()->attach([$levels[0]=>['price'=>$prices[0]],$levels[1]=>['price'=>$prices[1]],$levels[2]=>['price'=>$prices[2]]]);
 
             $trip->seats()->attach($seats,['status'=>'valid']);
 

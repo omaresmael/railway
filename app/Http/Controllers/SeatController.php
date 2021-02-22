@@ -19,8 +19,8 @@ class SeatController extends Controller
     public function bookTicket()
     {
         /**
-         * TODO::Add the amount functionality
-         * TODO::Add Pricable table that links between price and level adn trips
+         *
+         *
          */
 
         $user = \request()->user;

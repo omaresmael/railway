@@ -42,7 +42,7 @@ class Trip extends Model
     }
     public function levels()
     {
-        return $this->belongsToMany(Level::class)->withPivot('price');
+        return $this->belongsToMany(Level::class,'levels_trips')->withPivot('price');
     }
 
 }

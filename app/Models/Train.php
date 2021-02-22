@@ -18,4 +18,5 @@ class Train extends Model
     {
         return $this->hasMany(Trip::class);
     }
+
 }
