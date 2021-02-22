@@ -69,8 +69,6 @@ class User extends Authenticatable
         foreach ($userSeats as $i => $seat)
         {
             $tickets[$i] = ['trip_data'=>$seat->CurrentTrip(),'seat_id'=>$seat->pivot->seat_id];
-
-
         }
 
 

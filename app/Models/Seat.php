@@ -40,8 +40,11 @@ class Seat extends Model
     public function currentTrip()
     {
         $trip = $this->trips()->where('seatables.status','valid')->first();
+
+        if(!$trip) return response()->json(['error','The seat with id: '.$this->id.'Has no trips'],404);
+
         $levelId = $this->car->level->id;
-        $price =$trip->levels->find($levelId)->pivot->price;
+       $price =$trip->levels->find($levelId)->pivot->price;
 
 
 

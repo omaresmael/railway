@@ -18,13 +18,9 @@ class SeatController extends Controller
 
     public function bookTicket()
     {
-        /**
-         *
-         *
-         */
 
         $user = \request()->user;
-        $ids = \request()->seats;
+        $ids[] = \request()->seats;
 
         $seats = Seat::whereIn('id',$ids)->get();
 
