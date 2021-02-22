@@ -25,7 +25,7 @@ class SeatController extends Controller
         $seats = Seat::whereIn('id',$ids)->get();
 
         $trips= [];
-        //dd($seat);
+
         foreach ($seats as $i => $seat)
         {
             if($seat->status == 'booked'){
@@ -37,7 +37,7 @@ class SeatController extends Controller
             $seat->update();
         }
 
-        return ['trip_data'=>$trips,'seats'=>$seats];
+        return responseFormat(['trip_data'=>$trips,'seats'=>$seats]);
     }
 
     public function getTicket()
