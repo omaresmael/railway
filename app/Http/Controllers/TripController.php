@@ -49,6 +49,7 @@ class TripController extends Controller
      */
     public function store(TripRequest $request)
     {
+        dd('g');
         $prices = [];
         $user = \request()->user;
         array_push($prices,$request->priceA,$request->priceB,$request->priceC) ;
