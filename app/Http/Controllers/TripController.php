@@ -49,9 +49,10 @@ class TripController extends Controller
      */
     public function store(TripRequest $request)
     {
-
+        $prices = [];
         $user = \request()->user;
-        $prices = $request->prices;
+        array_push($prices,$request->priceA,$request->priceB,$request->priceC) ;
+
         if($user->isAdmin()) {
             $trip = Trip::create($request->all());
             if ($request->has('stations')) {
