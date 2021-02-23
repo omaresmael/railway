@@ -24,7 +24,7 @@ class TripRequest extends FormRequest
     public function rules()
     {
         return [
-            'train_id'=>'required|numeric','depart_time'=>'required|date|after:arrival_date', 'arrival_time'=>'required|date','base_id'=>'required|numeric','destination_id'=>'required|numeric','prices'=>'required'
+            'train_id'=>'required|numeric','depart_time'=>'required|date|after:arrival_date', 'arrival_time'=>'required|date','base_id'=>'required|numeric','destination_id'=>'required|numeric'
         ];
     }
 }
