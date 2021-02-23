@@ -44,7 +44,7 @@ class SeatController extends Controller
     {
         $user = \request()->user;
 
-         return $user->tickets();
+         return responseFormat($user->tickets());
 //        $userSeat = $user->seats()->where('seatables.status','valid')->firstOrFail();
 //        dd($userSeat->CurrentTrip());
 //        $userTrip = $userSeat->trips();
