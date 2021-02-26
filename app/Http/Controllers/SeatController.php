@@ -65,7 +65,7 @@ class SeatController extends Controller
     }
     //change the status of the ticket to expired
     public function deleteTicket(Seat $seat){
-        dd($seat);
+
         $user = \request()->user;
         $user->seats()->detach($seat->id);
         $user->seats()->attach($seat->id,['status' => 'expired']);
