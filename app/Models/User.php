@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function favorites()
     {
-        return $this->morphMany(Favorite::class, 'favoritable');
+        return $this->morphMany(Favorite::class, 'favoritable')->withPivot('status');
     }
 
     public function seats()

@@ -34,6 +34,7 @@ Route::resource('trains',\App\Http\Controllers\TrainController::class);
 //tickets
 Route::get('/tickets/',[\App\Http\Controllers\SeatController::class,'getTicket']);
 Route::post('/tickets/',[\App\Http\Controllers\SeatController::class,'bookTicket']);
+Route::delete('/tickets/{seat}',[\App\Http\Controllers\SeatController::class,'deleteTicket']);
 
 
 //user Handler
