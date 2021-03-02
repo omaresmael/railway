@@ -44,11 +44,12 @@ class Seat extends Model
         if(!$trip) return response()->json(['error','The seat with id: '.$this->id.'Has no trips'],404);
 
         $levelId = $this->car->level->id;
+        $class = $this->car->level->class;
        $price =$trip->levels->find($levelId)->pivot->price;
 
 
 
-        return ['trip'=>$trip,'price'=>$price];
+        return ['trip'=>$trip,'class'=>$class,'price'=>$price];
 
     }
 

@@ -50,18 +50,7 @@ class SeatController extends Controller
     public function getTicket()
     {
         $user = \request()->user;
-
          return responseFormat($user->tickets());
-//        $userSeat = $user->seats()->where('seatables.status','valid')->firstOrFail();
-//        dd($userSeat->CurrentTrip());
-//        $userTrip = $userSeat->trips();
-//        dd($userTrip);
-//
-//        dd($user->seats()->where('seatables.status','valid')->firstOrFail());
-//        foreach($user->seats as $seat){
-//            dd($seat);
-//        }
-
     }
     //change the status of the ticket to expired
     public function deleteTicket(Seat $seat){
@@ -72,8 +61,8 @@ class SeatController extends Controller
 
         $seat->status = 'available';
         $seat->update();
-        $tickets = $user->tickets();
-        return responseFormat($tickets);
+
+        return response()->json(['success','Ticket Deleted Successfully'],200);
 
     }
 }

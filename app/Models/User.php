@@ -60,7 +60,7 @@ class User extends Authenticatable
     public function seats()
     {
 
-        return $this->morphToMany(Seat::class, 'seatable');
+        return $this->morphToMany(Seat::class, 'seatable')->withTimestamps();
     }
 
     public function tickets() {
@@ -68,7 +68,7 @@ class User extends Authenticatable
         $userSeats = $this->seats()->where('seatables.status','valid')->get();
         foreach ($userSeats as $i => $seat)
         {
-            $tickets[$i] = ['trip_data'=>$seat->CurrentTrip(),'seat_id'=>$seat->pivot->seat_id];
+            $tickets[$i] = ['user_data'=>$this,'trip_data'=>$seat->CurrentTrip(),'ticket_time'=>$seat->pivot->created_at,'seat_id'=>$seat->pivot->seat_id];
         }
 
 
