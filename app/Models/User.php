@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -64,11 +65,28 @@ class User extends Authenticatable
     }
 
     public function tickets() {
+        $user = \request()->user;
        $tickets = [];
         $userSeats = $this->seats()->where('seatables.status','valid')->get();
         foreach ($userSeats as $i => $seat)
         {
-            $tickets[$i] = ['user_data'=>$this,'trip_data'=>$seat->CurrentTrip(),'ticket_time'=>$seat->pivot->created_at,'seat_id'=>$seat->pivot->seat_id];
+            $trip_data = $seat->currentTrip();
+            $trip = $trip_data['trip'];
+            $depart_time = $trip->depart_time;
+            $depart_time = str_replace( array(":"), '', $depart_time);
+            $now = str_replace(array(":"),'',Carbon::now('Africa/Cairo')->toTimeString());
+            if($depart_time < $now)
+            {
+                $seat->status = 'available';
+                $user->seats()->detach($seat->id);
+                $user->seats()->attach($seat->id,['status' => 'expired']);
+                $trip->seats()->detach($seat->id);
+                $trip->seats()->attach($seat->id,['status' => 'expired']);
+            }
+            else {
+                $tickets[$i] = ['user_data'=>$this,'trip_data'=>$trip_data,'ticket_time'=>$seat->pivot->created_at,'seat_id'=>$seat->pivot->seat_id];
+            }
+
         }
 
 

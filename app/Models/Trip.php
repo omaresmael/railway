@@ -33,7 +33,7 @@ class Trip extends Model
     }
     public function seats()
     {
-        return $this->morphToMany(Seat::class, 'seatable')->withTimestamps();
+        return $this->morphToMany(Seat::class, 'seatable')->withTimestamps()->with('car');
     }
 
     public function train()
