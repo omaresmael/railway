@@ -9,9 +9,16 @@ class Train extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function cars()
     {
         return $this->hasMany(Car::class);
+    }
+
+    public function levels()
+    {
+        return $this->belongsToMany(Level::class,'cars');
     }
 
     public function trips()

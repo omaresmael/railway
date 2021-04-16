@@ -14,6 +14,11 @@ class Level extends Model
         return $this->hasMany(Car::class);
     }
 
+    public function trains()
+    {
+        return $this->BelongsToMany(Train::class,'car');
+    }
+
     public function trips()
     {
         return $this->belongsToMany(Trip::class,'levels_trips')->withPivot('price');

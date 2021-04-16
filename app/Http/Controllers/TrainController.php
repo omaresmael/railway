@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class TrainController extends Controller
 {
+    public function __construct()
+    {
+
+        return $this->middleware('token');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,20 +21,11 @@ class TrainController extends Controller
     public function index()
     {
         $trains = Train::all();
-        $response['success'] = $trains;
+        $response = responseFormat($trains);
         return  $response;
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +35,43 @@ class TrainController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'type' =>'required',
+        ]);
+        $user = \request()->user;
+        if($user->isAdmin()) {
+            $train = Train::create($validated);
+            for($i = 0; $i<$request->A; $i++)
+            {
+                $train->levels()->attach(1);
+                for($i = 0; $i<$request->seatA; $i++)
+                {
+                    $train->cars()->seats()->create(['status'=>'available']);
+                }
+
+            }
+            for($i = 0; $i<$request->B; $i++)
+            {
+                $train->levels()->attach(11);
+                for($i = 0; $i<$request->seatB; $i++)
+                {
+                    $train->cars()->seats()->create(['status'=>'available']);
+                }
+            }
+            for($i = 0; $i<$request->C; $i++)
+            {
+                $train->levels()->attach(21);
+                for($i = 0; $i<$request->seatC; $i++)
+                {
+                    $train->cars()->seats()->create(['status'=>'available']);
+                }
+            }
+
+
+
+            return response()->json(['success' => 'Train Added Successfully'], 200);
+        }
+        return  response()->json(['error' => 'you\'re not authorized'],403);
     }
 
     /**
