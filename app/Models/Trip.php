@@ -12,6 +12,22 @@ class Trip extends Model
     protected $fillable = ['depart_time','arrival_time','base_id','destination_id','train_id'];
     protected $with = ['baseStation:id,name','destinationStation:id,name'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        Trip::creating(function($model) {
+            $baseStation = Station::find(request()->base_id);
+            $destinationStation = Station::find(request()->destination_id);
+            $baseLongitude = $baseStation->longitude;
+            $baseLatitude = $baseStation->latitude;
+
+            $destinationLongitude = $destinationStation->longitude;
+            $destinationLatitude = $destinationStation->latitude;
+            $model->distance = distance($baseLatitude,$baseLongitude,$destinationLatitude,$destinationLongitude);
+        });
+    }
+
     public function stations()
     {
         return $this->belongsToMany(Station::class);

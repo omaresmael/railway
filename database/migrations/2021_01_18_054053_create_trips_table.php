@@ -30,6 +30,8 @@ class CreateTripsTable extends Migration
                 ->references('id')
                 ->on('stations');
 
+            $table->string('distance');
+
             $table->unsignedBigInteger('train_id');
             $table->foreign('train_id')
                 ->references('id')
