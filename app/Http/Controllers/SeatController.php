@@ -8,6 +8,7 @@ use App\Models\User;
 use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SeatController extends Controller
 {
@@ -51,6 +52,11 @@ class SeatController extends Controller
     {
         $user = \request()->user;
 
+        if($user->isAdmin())
+        {
+            $leadIds = DB::table('seatables')->select('seat_id','users.name')->join('users', 'seatables.seatable_id', '=', 'users.id')->where('seatables.seatable_type', '=', 'App\Models\User')->distinct()->get();
+
+        }
         return responseFormat($user->tickets());
     }
     //change the status of the ticket to expired

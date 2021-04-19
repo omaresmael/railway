@@ -24,7 +24,7 @@ class Seat extends Model
 
     public function users()
     {
-    return $this->morphedByMany(User::class, 'seatable');
+    return $this->morphedByMany(User::class, 'seatable')->withTimestamps();
     }
 
     public function trips()
@@ -41,7 +41,7 @@ class Seat extends Model
     {
         $trip = $this->trips()->where('seatables.status','valid')->first();
 
-        if(!$trip) return response()->json(['error','The seat with id: '.$this->id.'Has no trips'],404);
+        if(!$trip) return null;
 
         $levelId = $this->car->level->id;
         $class = $this->car->level->class;

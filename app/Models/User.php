@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -65,12 +66,30 @@ class User extends Authenticatable
     }
 
     public function tickets() {
-        $user = \request()->user;
+
        $tickets = [];
         $userSeats = $this->seats()->where('seatables.status','valid')->get();
+
+        if($this->isAdmin())
+        {
+            $seatIds = DB::table('seatables')->join('users', 'seatables.seatable_id', '=', 'users.id')
+                ->where('seatables.seatable_type', '=', 'App\Models\User')
+                ->where('seatables.status','valid')->distinct()->pluck('seat_id');
+            $userSeats = Seat::whereIn('id', $seatIds)->get();
+
+        }
         foreach ($userSeats as $i => $seat)
         {
+            $user = $seat->users()->where('seatables.status','valid')->first();
+
             $trip_data = $seat->currentTrip();
+            if(!$trip_data)
+            {
+                continue;
+            }
+
+
+
             $trip = $trip_data['trip'];
             $depart_time = $trip->depart_time;
             $depart_time = str_replace( array(":"), '', $depart_time);
@@ -84,7 +103,7 @@ class User extends Authenticatable
                 $trip->seats()->attach($seat->id,['status' => 'expired']);
             }
             else {
-                $tickets[$i] = ['user_data'=>$this,'trip_data'=>$trip_data,'ticket_time'=>$seat->pivot->created_at,'seat_id'=>$seat->pivot->seat_id];
+                $tickets[$i] = ['user_data'=>$user,'trip_data'=>$trip_data,'ticket_time'=>$user->pivot->created_at,'seat_id'=>$user->pivot->seat_id];
             }
 
         }
