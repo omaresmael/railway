@@ -24,7 +24,8 @@ class SeatController extends Controller
         $user = \request()->user;
         $ids[] = \request()->seats;
 
-        $seats = Seat::whereIn('id',$ids)->get();
+        $seats = Seat::whereIn('id',$ids)->with('car')->get();
+
 
         $trips= [];
 
@@ -32,20 +33,32 @@ class SeatController extends Controller
         {
 
 
-            if($seat->status == 'booked'){
+
+            if($seat->status == 'booked')
+            {
                 return response()->json(['error'=>'the Seat '.$seat->id .' is already booked'],404);
             }
 
             $trips[$i] = $seat->CurrentTrip();
+            if($trips[$i]['price'] <= $user->wallet)
+            {
+                $user->seats()->attach($seat->id,['status' => 'valid']);
+                $seat->status = 'booked';
+                $seat->update();
 
-            $user->seats()->attach($seat->id,['status' => 'valid']);
-            $seat->status = 'booked';
-            $seat->update();
+                $user->wallet -= $trips[$i]['price'];
+                $user->update();
 
+            }
+            else
+            {
+                return response()->json(['error' =>'You don\'t have enough money in your wallet'],404);
+            }
 
         }
-
         return responseFormat(['trip_data'=>$trips,'seats'=>$seats]);
+
+
     }
 
     public function getTicket()

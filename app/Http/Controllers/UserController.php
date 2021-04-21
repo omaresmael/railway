@@ -36,4 +36,28 @@ class UserController extends Controller
         }
         return response()->json(['error' => 'you\'re not authorized'], 401);
     }
+
+    public function addToWallet(Request $request)
+    {
+        $user = \request()->user;
+        if($user->isAdmin())
+        {
+            $request->validate([
+                'wallet' =>'required|numeric',
+                'user_id'=>'required'
+            ]);
+            $normalUser = User::find($request->user_id);
+            if($normalUser)
+            {
+                $normalUser->wallet += $request->wallet;
+                $normalUser->update();
+            };
+
+            return response()->json(['success' =>'The amount of money has been added successfully'],200);
+        }
+        else
+        {
+            return response()->json(['error' => 'you\'re not authorized'], 401);
+        }
+    }
 }

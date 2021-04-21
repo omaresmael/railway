@@ -39,5 +39,7 @@ Route::delete('/tickets/{seat}',[\App\Http\Controllers\SeatController::class,'de
 
 //user Handler
 Route::get('/users',[\App\Http\Controllers\UserController::class,'index']);
+Route::post('/wallet/',[\App\Http\Controllers\UserController::class,'addToWallet']);
 Route::delete('/users/{deletedUser}',[\App\Http\Controllers\UserController::class,'destroy']);
+
 
