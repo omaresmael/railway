@@ -89,20 +89,6 @@ class User extends Authenticatable
                 continue;
             }
 
-
-
-            $trip = $trip_data['trip'];
-            $depart_time = $trip->depart_time;
-            $depart_time = str_replace( array(":"), '', $depart_time);
-            $now = str_replace(array(":"),'',Carbon::now('Africa/Cairo')->toTimeString());
-            if($depart_time < $now)
-            {
-                $seat->status = 'available';
-                $user->seats()->detach($seat->id);
-                $user->seats()->attach($seat->id,['status' => 'expired']);
-                $trip->seats()->detach($seat->id);
-                $trip->seats()->attach($seat->id,['status' => 'expired']);
-            }
             else {
                 $tickets[$i] = ['user_data'=>$user,'trip_data'=>$trip_data,'ticket_time'=>$user->pivot->created_at,'seat_id'=>$user->pivot->seat_id];
             }

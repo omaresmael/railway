@@ -40,20 +40,25 @@ class SeatController extends Controller
             }
 
             $trips[$i] = $seat->CurrentTrip();
-            if($trips[$i]['price'] <= $user->wallet)
+            if($trips[$i])
             {
-                $user->seats()->attach($seat->id,['status' => 'valid']);
-                $seat->status = 'booked';
-                $seat->update();
+                if($trips[$i]['price'] <= $user->wallet)
+                {
+                    $user->seats()->attach($seat->id,['status' => 'valid']);
+                    $seat->status = 'booked';
+                    $seat->update();
 
-                $user->wallet -= $trips[$i]['price'];
-                $user->update();
+                    $user->wallet -= $trips[$i]['price'];
+                    $user->update();
 
+                }
+                else
+                {
+                    return response()->json(['error' =>'You don\'t have enough money in your wallet'],404);
+                }
             }
-            else
-            {
-                return response()->json(['error' =>'You don\'t have enough money in your wallet'],404);
-            }
+            return response()->json(['error' => 'the trip is expired']);
+
 
         }
         return responseFormat(['trip_data'=>$trips,'seats'=>$seats]);
@@ -65,11 +70,6 @@ class SeatController extends Controller
     {
         $user = \request()->user;
 
-        if($user->isAdmin())
-        {
-            $leadIds = DB::table('seatables')->select('seat_id','users.name')->join('users', 'seatables.seatable_id', '=', 'users.id')->where('seatables.seatable_type', '=', 'App\Models\User')->distinct()->get();
-
-        }
         return responseFormat($user->tickets());
     }
     //change the status of the ticket to expired

@@ -6,6 +6,7 @@ use App\Http\Requests\TripRequest;
 use App\Models\Train;
 use App\Models\Trip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TripController extends Controller
 {
@@ -55,20 +56,31 @@ class TripController extends Controller
         array_push($prices,$request->priceA,$request->priceB,$request->priceC) ;
 
         if($user->isAdmin()) {
+            $canNotCreateTrip = 0;
             $trip = Trip::create($request->all());
-            if ($request->has('stations')) {
-                $trip->stations()->attach($request->has('stations'));
-            }
             $cars = $trip->train->cars;
             $seats = [];
             $levels = [];
             foreach ($cars as $car)
             {
                 $levelId = $car->level->id;
-
+                if($car->seats()->first()->currentTrip())
+                {
+                    $canNotCreateTrip = 1;
+                    break;
+                }
                 array_push($levels, $levelId);
                 $id = $car->seats->pluck('id');
                 array_push($seats, $id->all());
+            }
+            if($canNotCreateTrip)
+            {
+                $trip->delete();
+                return response()->json(['error'=>'you can not add trip to this train for now']);
+            }
+
+            if ($request->has('stations')) {
+                $trip->stations()->attach($request->has('stations'));
             }
             $seats = array_merge(...$seats);
 
