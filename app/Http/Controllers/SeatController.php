@@ -42,26 +42,24 @@ class SeatController extends Controller
             $trips[$i] = $seat->CurrentTrip();
             if($trips[$i])
             {
-                if($trips[$i]['price'] <= $user->wallet)
-                {
-                    $user->seats()->attach($seat->id,['status' => 'valid']);
+                if($trips[$i]['price'] <= $user->wallet) {
+                    $user->seats()->attach($seat->id, ['status' => 'valid']);
                     $seat->status = 'booked';
                     $seat->update();
 
                     $user->wallet -= $trips[$i]['price'];
                     $user->update();
+                    return responseFormat(['trip_data' => $trips, 'seats' => $seats]);
+                }
 
-                }
-                else
-                {
-                    return response()->json(['error' =>'You don\'t have enough money in your wallet'],404);
-                }
+                return response()->json(['error' =>'You don\'t have enough money in your wallet'],404);
+
             }
             return response()->json(['error' => 'the trip is expired']);
 
 
         }
-        return responseFormat(['trip_data'=>$trips,'seats'=>$seats]);
+
 
 
     }
