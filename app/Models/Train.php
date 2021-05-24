@@ -25,5 +25,13 @@ class Train extends Model
     {
         return $this->hasMany(Trip::class);
     }
+    public function baseStations()
+    {
+        return $this->belongsToMany(Station::class,'trips','train_id','base_id');
+    }
+    public function destinationStations()
+    {
+        return $this->belongsToMany(Station::class,'trips','train_id','destination_id');
+    }
 
 }

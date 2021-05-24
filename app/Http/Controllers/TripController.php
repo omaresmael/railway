@@ -64,19 +64,9 @@ class TripController extends Controller
             foreach ($cars as $car)
             {
                 $levelId = $car->level->id;
-                if($car->seats()->first()->currentTrip())
-                {
-                    $canNotCreateTrip = 1;
-                    break;
-                }
                 array_push($levels, $levelId);
                 $id = $car->seats->pluck('id');
                 array_push($seats, $id->all());
-            }
-            if($canNotCreateTrip)
-            {
-                $trip->delete();
-                return response()->json(['error'=>'you can not add trip to this train for now']);
             }
 
             if ($request->has('stations')) {

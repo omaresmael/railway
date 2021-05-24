@@ -20,7 +20,8 @@ class TrainController extends Controller
      */
     public function index()
     {
-        $trains = Train::all();
+
+        $trains = Train::with('baseStations','destinationStations')->get();
         $response = responseFormat($trains);
         return  $response;
     }
