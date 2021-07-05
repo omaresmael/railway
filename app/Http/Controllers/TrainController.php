@@ -42,13 +42,20 @@ class TrainController extends Controller
         $user = \request()->user;
         if($user->isAdmin()) {
             $train = Train::create($validated);
+
             for($i = 0; $i<$request->A; $i++)
             {
                 $train->levels()->attach(1);
+
                 for($i = 0; $i<$request->seatA; $i++)
                 {
-                    $train->cars()->seats()->create(['status'=>'available']);
+                    $cars = $train->cars()->where('level_id',1)->get();
+                    $cars->each(function($item){
+                        $item->seats()->create(['status'=>'available']);
+                    });
+
                 }
+
 
             }
             for($i = 0; $i<$request->B; $i++)
@@ -56,7 +63,10 @@ class TrainController extends Controller
                 $train->levels()->attach(11);
                 for($i = 0; $i<$request->seatB; $i++)
                 {
-                    $train->cars()->seats()->create(['status'=>'available']);
+                    $cars = $train->cars()->where('level_id',11)->get();
+                    $cars->each(function($item){
+                        $item->seats()->create(['status'=>'available']);
+                    });
                 }
             }
             for($i = 0; $i<$request->C; $i++)
@@ -64,7 +74,10 @@ class TrainController extends Controller
                 $train->levels()->attach(21);
                 for($i = 0; $i<$request->seatC; $i++)
                 {
-                    $train->cars()->seats()->create(['status'=>'available']);
+                    $cars = $train->cars()->where('level_id',21)->get();
+                    $cars->each(function($item){
+                        $item->seats()->create(['status'=>'available']);
+                    });
                 }
             }
 
