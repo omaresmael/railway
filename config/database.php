@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 
-$DATABASE_URL=parse_url('mysql://b6f89d918eee80:36d562c4@us-cdbr-east-03.cleardb.com/heroku_9ef45260592f2f3?reconnect=true');
+$DATABASE_URL=parse_url('mysql://b8c818ec6a45d3:5d2a3a51@us-cdbr-east-04.cleardb.com/heroku_24340445ba626af?reconnect=true');
 
 return [
 
@@ -52,7 +52,7 @@ return [
             'port' => '3306',
             'database' => ltrim($DATABASE_URL['path'],'/'),
             'username' => $DATABASE_URL['user'],
-            'password' => '36d562c4',
+            'password' => '5d2a3a51',
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
