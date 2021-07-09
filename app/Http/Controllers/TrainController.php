@@ -43,7 +43,7 @@ class TrainController extends Controller
         if($user->isAdmin()) {
             $train = Train::create($validated);
 
-            return response()->json(['success' => 'Train Added Successfully'], 200);
+            return response()->json(['success' => $train], 200);
         }
         return  response()->json(['error' => 'you\'re not authorized'],403);
     }
