@@ -30,6 +30,8 @@ Route::resource('stations',\App\Http\Controllers\StationController::class);
 
 //trains
 Route::resource('trains',\App\Http\Controllers\TrainController::class);
+Route::post('add_cars/{train}',[\App\Http\Controllers\TrainController::class,'addCarsToTrain']);
+Route::post('add_seats/{train}',[\App\Http\Controllers\TrainController::class,'addSeatsToCars']);
 
 //tickets
 Route::get('/tickets/',[\App\Http\Controllers\SeatController::class,'getTicket']);

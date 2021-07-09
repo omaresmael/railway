@@ -43,46 +43,54 @@ class TrainController extends Controller
         if($user->isAdmin()) {
             $train = Train::create($validated);
 
-            for($i = 0; $i<$request->A; $i++)
-            {
-                $train->levels()->attach(1);
-
-                for($i = 0; $i<$request->seatA; $i++)
-                {
-                    $cars = $train->cars()->where('level_id',1)->get();
-                    $cars->each(function($item){
-                        $item->seats()->create(['status'=>'available']);
-                    });
-
-                }
-
-
-            }
-            for($i = 0; $i<$request->B; $i++)
-            {
-                $train->levels()->attach(11);
-                for($i = 0; $i<$request->seatB; $i++)
-                {
-                    $cars = $train->cars()->where('level_id',11)->get();
-                    $cars->each(function($item){
-                        $item->seats()->create(['status'=>'available']);
-                    });
-                }
-            }
-            for($i = 0; $i<$request->C; $i++)
-            {
-                $train->levels()->attach(21);
-                for($i = 0; $i<$request->seatC; $i++)
-                {
-                    $cars = $train->cars()->where('level_id',21)->get();
-                    $cars->each(function($item){
-                        $item->seats()->create(['status'=>'available']);
-                    });
-                }
-            }
             return response()->json(['success' => 'Train Added Successfully'], 200);
         }
         return  response()->json(['error' => 'you\'re not authorized'],403);
+    }
+
+    public function addCarsToTrain(Train $train, Request $request)
+    {
+        for($i = 0; $i<$request->A; $i++)
+        {
+            $train->levels()->attach(1);
+        }
+        for($i = 0; $i<$request->B; $i++)
+        {
+            $train->levels()->attach(2);
+        }
+        for($i = 0; $i<$request->C; $i++)
+        {
+            $train->levels()->attach(3);
+        }
+        return response()->json(['success' => 'cars Added Successfully'], 200);
+    }
+    public function addSeatsToCars(Train $train,Request $request)
+    {
+        for($i = 0; $i<$request->seatA; $i++)
+        {
+            $cars = $train->cars()->where('level_id',1)->get();
+            $cars->each(function($item){
+                $item->seats()->create(['status'=>'available']);
+            });
+
+        }
+
+        for($i = 0; $i<$request->seatB; $i++)
+        {
+            $cars = $train->cars()->where('level_id',11)->get();
+            $cars->each(function($item){
+                $item->seats()->create(['status'=>'available']);
+            });
+        }
+
+        for($i = 0; $i<$request->seatC; $i++)
+        {
+            $cars = $train->cars()->where('level_id',21)->get();
+            $cars->each(function($item){
+                $item->seats()->create(['status'=>'available']);
+            });
+        }
+        return response()->json(['success' => 'Seats Added Successfully'], 200);
     }
 
     /**
